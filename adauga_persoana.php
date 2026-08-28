@@ -7,28 +7,55 @@ $mesaj  = "";
 $eroare = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cnp          = $_POST["cnp"];
-    $nume         = $_POST["nume"];
-    $data_nasterii= $_POST["data_nasterii"];
-    $studii       = $_POST["studii"];
-    $mediu        = $_POST["mediu"];
-    $stare_civila = $_POST["stare_civila"];
-    $ocupatie     = $_POST["ocupatie"];
-    $adresa       = $_POST["adresa"];
-    $telefon      = $_POST["telefon"];
-    $email        = $_POST["email"];
+    // "?? """ evită warning-ul "Undefined array key" dacă un câmp lipsește din POST;
+    // trim() scoate spațiile de la capete, ca un câmp cu doar spații să conteze gol
+    $cnp          = trim($_POST["cnp"] ?? "");
+    $nume         = trim($_POST["nume"] ?? "");
+    $data_nasterii= trim($_POST["data_nasterii"] ?? "");
+    $studii       = trim($_POST["studii"] ?? "");
+    $mediu        = trim($_POST["mediu"] ?? "");
+    $stare_civila = trim($_POST["stare_civila"] ?? "");
+    $ocupatie     = trim($_POST["ocupatie"] ?? "");
+    $adresa       = trim($_POST["adresa"] ?? "");
+    $telefon      = trim($_POST["telefon"] ?? "");
+    $email        = trim($_POST["email"] ?? "");
 
-    // Prepared statement — toate valorile din POST sunt legate ca parametri, nu concatenate în SQL
-    $stmt = mysqli_prepare($conn, "INSERT INTO persoane
-            (cnp, nume, data_nasterii, studii, mediu, stare_civila, ocupatie, adresa, telefon, email)
-            VALUES (?,?,?,?,?,?,?,?,?,?)");
-    mysqli_stmt_bind_param($stmt, "ssssssssss",
-        $cnp, $nume, $data_nasterii, $studii, $mediu, $stare_civila, $ocupatie, $adresa, $telefon, $email);
+    // Validare pe server — nu ne bazăm pe validarea din JS, care poate fi
+    // dezactivată sau ocolită (request POST direct). Adunăm toate erorile
+    // într-o listă ca utilizatorul să le vadă pe toate deodată.
+    $erori = [];
 
-    if (mysqli_stmt_execute($stmt)) {
-        $mesaj = "Persoana a fost adăugată cu succes!";
+    if (!preg_match('/^\d{13}$/', $cnp)) {
+        $erori[] = "CNP-ul trebuie să conțină exact 13 cifre.";
+    }
+    if ($nume === "") {
+        $erori[] = "Numele este obligatoriu.";
+    }
+    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_nasterii) || $data_nasterii > date("Y-m-d")) {
+        $erori[] = "Data nașterii este obligatorie și nu poate fi în viitor.";
+    }
+    if ($studii === "" || $mediu === "" || $stare_civila === "" || $ocupatie === "") {
+        $erori[] = "Toate câmpurile socio-demografice sunt obligatorii.";
+    }
+    if ($email !== "" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erori[] = "Adresa de email nu este validă.";
+    }
+
+    if (count($erori) > 0) {
+        $eroare = implode("<br>", $erori);
     } else {
-        $eroare = "Eroare la adăugare: " . mysqli_stmt_error($stmt);
+        // Prepared statement — toate valorile din POST sunt legate ca parametri, nu concatenate în SQL
+        $stmt = mysqli_prepare($conn, "INSERT INTO persoane
+                (cnp, nume, data_nasterii, studii, mediu, stare_civila, ocupatie, adresa, telefon, email)
+                VALUES (?,?,?,?,?,?,?,?,?,?)");
+        mysqli_stmt_bind_param($stmt, "ssssssssss",
+            $cnp, $nume, $data_nasterii, $studii, $mediu, $stare_civila, $ocupatie, $adresa, $telefon, $email);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $mesaj = "Persoana a fost adăugată cu succes!";
+        } else {
+            $eroare = "Eroare la adăugare: " . mysqli_stmt_error($stmt);
+        }
     }
 }
 
