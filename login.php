@@ -10,6 +10,7 @@ if (isset($_SESSION["user"])) {
 }
 
 $error = "";
+$username = "";   // reținut între submit-uri ca să nu se golească câmpul la eroare
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
@@ -63,7 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form method="POST" action="">
         <div class="form-grup">
             <label for="username">Utilizator</label>
-            <input type="text" id="username" name="username" placeholder="Introduceți utilizatorul" required autofocus>
+            <input type="text" id="username" name="username" placeholder="Introduceți utilizatorul"
+                   value="<?php echo htmlspecialchars($username); ?>" required autofocus>
         </div>
 
         <div class="form-grup">
