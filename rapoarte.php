@@ -167,7 +167,7 @@ if ($raport_selectat == "studii") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["studii"]; ?></td>
+            <td><?php echo htmlspecialchars($row["studii"]); ?></td>
             <td><?php echo $row["total"]; ?></td>
         </tr>
     <?php } ?>
@@ -195,7 +195,7 @@ if ($raport_selectat == "mediu") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["mediu"]; ?></td>
+            <td><?php echo htmlspecialchars($row["mediu"]); ?></td>
             <td><?php echo $row["total"]; ?></td>
         </tr>
     <?php } ?>
@@ -224,7 +224,7 @@ if ($raport_selectat == "stare_civila") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["stare_civila"]; ?></td>
+            <td><?php echo htmlspecialchars($row["stare_civila"]); ?></td>
             <td><?php echo $row["total"]; ?></td>
         </tr>
     <?php } ?>
@@ -253,7 +253,7 @@ if ($raport_selectat == "ocupatie") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["ocupatie"]; ?></td>
+            <td><?php echo htmlspecialchars($row["ocupatie"]); ?></td>
             <td><?php echo $row["total"]; ?></td>
         </tr>
     <?php } ?>
@@ -282,7 +282,7 @@ if ($raport_selectat == "domenii") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["domeniu_activitate"]; ?></td>
+            <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
             <td><?php echo $row["total"]; ?></td>
         </tr>
     <?php } ?>
@@ -312,7 +312,7 @@ if ($raport_selectat == "cifra_afaceri") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["domeniu_activitate"]; ?></td>
+            <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
             <td><?php echo number_format($row["total_cifra"], 2); ?></td>
         </tr>
     <?php } ?>
@@ -342,7 +342,7 @@ if ($raport_selectat == "profit") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["domeniu_activitate"]; ?></td>
+            <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
             <td><?php echo number_format($row["total_profit"], 2); ?></td>
         </tr>
     <?php } ?>
@@ -372,7 +372,7 @@ if ($raport_selectat == "capital") {
 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <tr>
-            <td><?php echo $row["domeniu_activitate"]; ?></td>
+            <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
             <td><?php echo number_format($row["total_capital"], 2); ?></td>
         </tr>
     <?php } ?>
