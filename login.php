@@ -26,6 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // password_verify() re-hashează parola introdusă cu salt-ul din hash-ul stocat
     // și compară în timp constant. Dacă userul nu există, $user e null -> respins.
     if ($user && password_verify($password, $user["password"])) {
+        // Sesiune nouă la trecerea anonim -> autentificat: dacă un atacator a
+        // "plantat" un ID de sesiune în browserul victimei (session fixation),
+        // acel ID devine inutil. true = șterge și fișierul vechi de sesiune.
+        session_regenerate_id(true);
+
         $_SESSION["user"] = $username;
         header("Location: dashboard.php");
         exit();
