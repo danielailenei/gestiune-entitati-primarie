@@ -96,14 +96,14 @@ if (isset($_GET["filtru_cifra"])) {
 
         <?php while ($row = mysqli_fetch_assoc($persoane_interval)) { ?>
             <tr>
-                <td><?php echo $row["cnp"]; ?></td>
-                <td><?php echo $row["nume"]; ?></td>
-                <td><?php echo $row["varsta"]; ?></td>
-                <td><?php echo $row["studii"]; ?></td>
-                <td><?php echo $row["mediu"]; ?></td>
-                <td><?php echo $row["ocupatie"]; ?></td>
-                <td><?php echo $row["telefon"]; ?></td>
-                <td><?php echo $row["email"]; ?></td>
+                <td><?php echo htmlspecialchars($row["cnp"]); ?></td>
+                <td><?php echo htmlspecialchars($row["nume"]); ?></td>
+                <td><?php echo htmlspecialchars($row["varsta"]); ?></td>
+                <td><?php echo htmlspecialchars($row["studii"]); ?></td>
+                <td><?php echo htmlspecialchars($row["mediu"]); ?></td>
+                <td><?php echo htmlspecialchars($row["ocupatie"]); ?></td>
+                <td><?php echo htmlspecialchars($row["telefon"]); ?></td>
+                <td><?php echo htmlspecialchars($row["email"]); ?></td>
             </tr>
         <?php } ?>
     </table>
@@ -136,10 +136,10 @@ if (isset($_GET["filtru_cifra"])) {
 
         <?php while ($row = mysqli_fetch_assoc($firme_interval_angajati)) { ?>
             <tr>
-                <td><?php echo $row["cui"]; ?></td>
-                <td><?php echo $row["denumire"]; ?></td>
-                <td><?php echo $row["numar_angajati"]; ?></td>
-                <td><?php echo $row["domeniu_activitate"]; ?></td>
+                <td><?php echo htmlspecialchars($row["cui"]); ?></td>
+                <td><?php echo htmlspecialchars($row["denumire"]); ?></td>
+                <td><?php echo htmlspecialchars($row["numar_angajati"]); ?></td>
+                <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
                 <td><?php echo number_format($row["cifra_afaceri"], 2); ?></td>
                 <td><?php echo number_format($row["profit"], 2); ?></td>
             </tr>
@@ -173,10 +173,10 @@ if (isset($_GET["filtru_cifra"])) {
 
         <?php while ($row = mysqli_fetch_assoc($firme_interval_profit)) { ?>
             <tr>
-                <td><?php echo $row["cui"]; ?></td>
-                <td><?php echo $row["denumire"]; ?></td>
-                <td><?php echo $row["domeniu_activitate"]; ?></td>
-                <td><?php echo $row["numar_angajati"]; ?></td>
+                <td><?php echo htmlspecialchars($row["cui"]); ?></td>
+                <td><?php echo htmlspecialchars($row["denumire"]); ?></td>
+                <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
+                <td><?php echo htmlspecialchars($row["numar_angajati"]); ?></td>
                 <td><?php echo number_format($row["profit"], 2); ?></td>
             </tr>
         <?php } ?>
@@ -210,10 +210,10 @@ if (isset($_GET["filtru_cifra"])) {
 
         <?php while ($row = mysqli_fetch_assoc($firme_interval_cifra)) { ?>
             <tr>
-                <td><?php echo $row["cui"]; ?></td>
-                <td><?php echo $row["denumire"]; ?></td>
-                <td><?php echo $row["domeniu_activitate"]; ?></td>
-                <td><?php echo $row["numar_angajati"]; ?></td>
+                <td><?php echo htmlspecialchars($row["cui"]); ?></td>
+                <td><?php echo htmlspecialchars($row["denumire"]); ?></td>
+                <td><?php echo htmlspecialchars($row["domeniu_activitate"]); ?></td>
+                <td><?php echo htmlspecialchars($row["numar_angajati"]); ?></td>
                 <td><?php echo number_format($row["cifra_afaceri"], 2); ?></td>
                 <td><?php echo number_format($row["profit"], 2); ?></td>
             </tr>
