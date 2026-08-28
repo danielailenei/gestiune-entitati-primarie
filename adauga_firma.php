@@ -7,29 +7,64 @@ $mesaj  = "";
 $eroare = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cui               = $_POST["cui"];
-    $denumire          = $_POST["denumire"];
-    $numar_angajati    = $_POST["numar_angajati"];
-    $domeniu_activitate= $_POST["domeniu_activitate"];
-    $capital_social    = $_POST["capital_social"];
-    $cifra_afaceri     = $_POST["cifra_afaceri"];
-    $profit            = $_POST["profit"];
-    $an_infiintare     = $_POST["an_infiintare"];
-    $adresa            = $_POST["adresa"];
-    $telefon           = $_POST["telefon"];
-    $email             = $_POST["email"];
+    // "?? """ evită warning-ul "Undefined array key" dacă un câmp lipsește din POST;
+    // trim() scoate spațiile de la capete, ca un câmp cu doar spații să conteze gol
+    $cui               = trim($_POST["cui"] ?? "");
+    $denumire          = trim($_POST["denumire"] ?? "");
+    $numar_angajati    = trim($_POST["numar_angajati"] ?? "");
+    $domeniu_activitate= trim($_POST["domeniu_activitate"] ?? "");
+    $capital_social    = trim($_POST["capital_social"] ?? "");
+    $cifra_afaceri     = trim($_POST["cifra_afaceri"] ?? "");
+    $profit            = trim($_POST["profit"] ?? "");
+    $an_infiintare     = trim($_POST["an_infiintare"] ?? "");
+    $adresa            = trim($_POST["adresa"] ?? "");
+    $telefon           = trim($_POST["telefon"] ?? "");
+    $email             = trim($_POST["email"] ?? "");
 
-    // Prepared statement — numerele merg cu tipul lor (i/d), textul cu "s"
-    $stmt = mysqli_prepare($conn, "INSERT INTO firme
-            (cui, denumire, numar_angajati, domeniu_activitate, capital_social, cifra_afaceri, profit, an_infiintare, adresa, telefon, email)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-    mysqli_stmt_bind_param($stmt, "ssisdddisss",
-        $cui, $denumire, $numar_angajati, $domeniu_activitate, $capital_social, $cifra_afaceri, $profit, $an_infiintare, $adresa, $telefon, $email);
+    // Validare pe server — JS-ul (valideazaFirma) poate fi dezactivat sau ocolit
+    // printr-un request POST direct. Adunăm toate erorile într-o listă.
+    $erori = [];
 
-    if (mysqli_stmt_execute($stmt)) {
-        $mesaj = "Firma a fost adăugată cu succes!";
+    if ($cui === "" || strlen($cui) > 20) {
+        $erori[] = "CUI-ul este obligatoriu (maxim 20 de caractere).";
+    }
+    if ($denumire === "" || strlen($denumire) > 100) {
+        $erori[] = "Denumirea este obligatorie (maxim 100 de caractere).";
+    }
+    if (!ctype_digit($numar_angajati)) {
+        $erori[] = "Numărul de angajați trebuie să fie un întreg mai mare sau egal cu 0.";
+    }
+    if ($an_infiintare !== "" && (!ctype_digit($an_infiintare) || $an_infiintare < 1900 || $an_infiintare > date("Y"))) {
+        $erori[] = "Anul înființării trebuie să fie între 1900 și " . date("Y") . ".";
+    }
+    if ($capital_social !== "" && (!is_numeric($capital_social) || $capital_social < 0)) {
+        $erori[] = "Capitalul social trebuie să fie un număr pozitiv.";
+    }
+    if ($cifra_afaceri !== "" && (!is_numeric($cifra_afaceri) || $cifra_afaceri < 0)) {
+        $erori[] = "Cifra de afaceri trebuie să fie un număr pozitiv.";
+    }
+    if ($profit !== "" && !is_numeric($profit)) {
+        $erori[] = "Profitul trebuie să fie un număr (poate fi și negativ).";
+    }
+    if ($email !== "" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erori[] = "Adresa de email nu este validă.";
+    }
+
+    if (count($erori) > 0) {
+        $eroare = implode("<br>", $erori);
     } else {
-        $eroare = "Eroare la adăugare: " . mysqli_stmt_error($stmt);
+        // Prepared statement — numerele merg cu tipul lor (i/d), textul cu "s"
+        $stmt = mysqli_prepare($conn, "INSERT INTO firme
+                (cui, denumire, numar_angajati, domeniu_activitate, capital_social, cifra_afaceri, profit, an_infiintare, adresa, telefon, email)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        mysqli_stmt_bind_param($stmt, "ssisdddisss",
+            $cui, $denumire, $numar_angajati, $domeniu_activitate, $capital_social, $cifra_afaceri, $profit, $an_infiintare, $adresa, $telefon, $email);
+
+        if (mysqli_stmt_execute($stmt)) {
+            $mesaj = "Firma a fost adăugată cu succes!";
+        } else {
+            $eroare = "Eroare la adăugare: " . mysqli_stmt_error($stmt);
+        }
     }
 }
 
