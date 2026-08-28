@@ -15,13 +15,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    // Căutăm userul cu username + parola introduse (prepared statement, fără concatenare în SQL)
-    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE username = ? AND password = ?");
-    mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+    // Căutăm doar după username; parola o verificăm în PHP cu password_verify(),
+    // fiindcă în DB e stocat un hash bcrypt, nu parola în clar.
+    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE username = ?");
+    mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
+    $user = mysqli_fetch_assoc($result);
 
-    if (mysqli_num_rows($result) == 1) {
+    // password_verify() re-hashează parola introdusă cu salt-ul din hash-ul stocat
+    // și compară în timp constant. Dacă userul nu există, $user e null -> respins.
+    if ($user && password_verify($password, $user["password"])) {
         $_SESSION["user"] = $username;
         header("Location: dashboard.php");
         exit();

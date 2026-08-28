@@ -328,8 +328,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
+-- `password` este un hash bcrypt generat cu password_hash($parola, PASSWORD_DEFAULT).
+-- Valoarea de mai jos corespunde parolei 'admin123'.
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-(1, 'admin', 'admin123');
+(1, 'admin', '$2y$10$TMgvrtnZiz2DUrBZc6.3VeILRWtvxEZvl5S4Gp3tcxLsIZ5IyHuoW');
 
 --
 -- Indexes for dumped tables
