@@ -107,6 +107,11 @@ if (isset($_GET["filtru_cifra"])) {
             </tr>
         <?php } ?>
     </table>
+<?php } elseif (isset($_GET["filtru_varsta"])) { ?>
+    <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>Nicio persoană în intervalul de vârstă selectat.</p>
+    </div>
 <?php } ?>
 
 <hr>
@@ -145,6 +150,11 @@ if (isset($_GET["filtru_cifra"])) {
             </tr>
         <?php } ?>
     </table>
+<?php } elseif (isset($_GET["filtru_angajati"])) { ?>
+    <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>Nicio firmă în intervalul de angajați selectat.</p>
+    </div>
 <?php } ?>
 
 <hr>
@@ -181,6 +191,11 @@ if (isset($_GET["filtru_cifra"])) {
             </tr>
         <?php } ?>
     </table>
+<?php } elseif (isset($_GET["filtru_profit"])) { ?>
+    <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>Nicio firmă în intervalul de profit selectat.</p>
+    </div>
 <?php } ?>
 
 <hr>
@@ -219,6 +234,11 @@ if (isset($_GET["filtru_cifra"])) {
             </tr>
         <?php } ?>
     </table>
+<?php } elseif (isset($_GET["filtru_cifra"])) { ?>
+    <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>Nicio firmă în intervalul de cifră de afaceri selectat.</p>
+    </div>
 <?php } ?>
 
 <?php
