@@ -1,0 +1,15 @@
+# Fișiere sistem de operare
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editoare / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Loguri / temporare
+*.log
+error_log
