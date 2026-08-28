@@ -1,0 +1,6 @@
+# Nu servi pe web fișierele de versionare git.
+# Fără asta, http://.../proiect_final_AM/.git/config, /.git/HEAD etc. sunt
+# accesibile din browser și codul sursă complet (+ istoricul) se poate
+# reconstitui din directorul .git/.
+# Regula prinde orice cale care conține "/.git" — deci și .git/... și .gitignore.
+RedirectMatch 404 /\.git
